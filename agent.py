@@ -11,6 +11,8 @@ from livekit.agents import (
 from livekit.agents.multimodal import MultimodalAgent
 from livekit.plugins import openai 
 from dotenv import load_dotenv
+from api import AssistantFnc
+from prompts import WELCOME_MESSAGE, INSTRUCTIONS
 import os
 
 load_dotenv()
@@ -20,7 +22,7 @@ async def enterypoint(ctx : JobContext):
     await ctx.wait_for_participant()
 
     model = openai.realtime.RealtimeModel(
-        instructions="",
+        instructions=INSTRUCTIONS,
         voice="shimmer",
         temperature=0.8,
         modalities=["audio", "text"]
@@ -33,7 +35,7 @@ async def enterypoint(ctx : JobContext):
     session.conversation.item.create(
         llm.ChatMessage(
             role="assistant",
-            content=""
+            content=WELCOME_MESSAGE
         )
     )
     session.response.create()
